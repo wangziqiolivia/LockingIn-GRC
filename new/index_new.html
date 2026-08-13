@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Locking In — Cozy Study Space</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap');
+
+:root{
+  --paper:#fffaf0;
+  --paper2:#f7f1e5;
+  --ink:#29333d;
+  --muted:#71808a;
+  --blue:#b9dce8;
+  --blue2:#dceef3;
+  --yellow:#f8dda0;
+  --green:#c9dfc5;
+  --pink:#f2cdd0;
+  --line:#e8dfcf;
+  --shadow:0 18px 45px rgba(62,53,39,.10);
+  --radius:28px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:"DM Sans",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(185,220,232,.35),transparent 25%),
+    radial-gradient(circle at 90% 30%,rgba(248,221,160,.28),transparent 23%),
+    var(--paper);
+  line-height:1.6;
+}
+body:before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;opacity:.28;
+  background-image:radial-gradient(#cfc3ae .7px,transparent .7px);
+  background-size:17px 17px;
+}
+a{text-decoration:none;color:inherit}
+.container{width:min(1120px,calc(100% - 40px));margin:auto}
+nav{
+  position:sticky;top:14px;z-index:20;
+  width:min(1060px,calc(100% - 28px));margin:14px auto 0;
+  padding:12px 14px 12px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,250,240,.86);backdrop-filter:blur(14px);
+  border:1px solid rgba(232,223,207,.9);border-radius:22px;
+  box-shadow:0 8px 28px rgba(62,53,39,.06);
+}
+.logo{font-weight:800;letter-spacing:-.04em;font-size:1.2rem}
+.logo span{display:inline-block;transform:rotate(-2deg);font-family:Kalam,cursive;font-size:1.35em}
+.navlinks{display:flex;gap:24px;font-size:.9rem;color:var(--muted)}
+.navlinks a:hover{color:var(--ink)}
+.navbtn{
+  background:var(--ink);color:white;padding:10px 17px;border-radius:14px;
+  font-weight:700;font-size:.88rem;
+}
+.hero{padding:105px 0 75px;position:relative}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center}
+.kicker{
+  display:inline-flex;gap:8px;align-items:center;
+  padding:8px 13px;background:var(--blue2);border:1px solid #c8e3ea;
+  border-radius:999px;font-size:.82rem;font-weight:700;margin-bottom:20px;
+}
+h1{
+  margin:0;font-size:clamp(3.6rem,7vw,6.5rem);line-height:.88;
+  letter-spacing:-.075em;
+}
+h1 .scribble{font-family:Kalam,cursive;font-weight:700;letter-spacing:-.04em}
+.hero p{font-size:1.15rem;color:var(--muted);max-width:590px;margin:28px 0}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.primary,.secondary{
+  padding:14px 20px;border-radius:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px;
+}
+.primary{background:var(--ink);color:white;box-shadow:0 8px 18px rgba(41,51,61,.16)}
+.secondary{background:white;border:1px solid var(--line)}
+.doodle{
+  position:absolute;font-family:Kalam,cursive;color:#8198a0;font-size:1.15rem;
+}
+.d1{left:4%;top:18%;transform:rotate(-9deg)}
+.d2{right:7%;bottom:10%;transform:rotate(7deg)}
+.desk{position:relative;min-height:420px}
+.note{
+  position:absolute;padding:25px;background:#fff7a9;width:260px;
+  box-shadow:var(--shadow);border-radius:4px 4px 20px 4px;
+  transform:rotate(-5deg);left:8%;top:10%;
+}
+.note h3{font-family:Kalam,cursive;font-size:1.7rem;margin:0 0 8px}
+.note ul{padding-left:20px;margin:0}
+.note li{margin:8px 0}
+.tape{position:absolute;width:76px;height:24px;background:rgba(210,194,157,.45);top:-10px;left:90px;transform:rotate(2deg)}
+.coffee{
+  position:absolute;right:3%;bottom:12%;width:190px;height:180px;
+  background:var(--pink);border-radius:50% 50% 45% 45%;
+  transform:rotate(7deg);box-shadow:var(--shadow);
+}
+.coffee:before{content:"☕";position:absolute;font-size:5rem;left:48px;top:45px}
+.sticker{
+  position:absolute;right:4%;top:13%;background:var(--green);
+  padding:18px 22px;border-radius:50%;font-family:Kalam,cursive;font-size:1.25rem;
+  transform:rotate(9deg);box-shadow:0 10px 25px rgba(62,53,39,.08)
+}
+.section{padding:78px 0}
+.section-head{text-align:center;max-width:650px;margin:0 auto 42px}
+.section-head h2{font-size:clamp(2.2rem,4vw,3.4rem);letter-spacing:-.06em;margin:0 0 12px}
+.section-head p{color:var(--muted);margin:0}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{
+  padding:30px;min-height:280px;border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);
+  transition:.25s transform,.25s box-shadow;background:#fffdf8;
+  position:relative;overflow:hidden;
+}
+.card:hover{transform:translateY(-7px) rotate(-.4deg);box-shadow:0 25px 55px rgba(62,53,39,.14)}
+.card:nth-child(1){background:var(--blue2);transform:rotate(-1deg)}
+.card:nth-child(2){background:#fff4c9;transform:rotate(1deg)}
+.card:nth-child(3){background:#e4f0df;transform:rotate(-.5deg)}
+.icon{font-size:2.2rem;margin-bottom:20px}
+.card h3{font-size:1.5rem;margin:0 0 9px;letter-spacing:-.035em}
+.card p{color:#66757e;margin:0 0 20px}
+.card a{font-weight:700}
+.question{
+  background:#fffdf8;border:1px solid var(--line);border-radius:30px;
+  padding:42px;box-shadow:var(--shadow);position:relative;
+}
+.question:after{
+  content:"";position:absolute;right:35px;top:-18px;width:105px;height:34px;
+  background:rgba(210,194,157,.45);transform:rotate(6deg)
+}
+.question h2{font-size:2.2rem;letter-spacing:-.05em;margin:0 0 8px}
+.question p{color:var(--muted)}
+.inputrow{display:flex;gap:10px;margin-top:24px}
+.inputrow input{
+  flex:1;border:1px solid var(--line);border-radius:15px;padding:15px 17px;
+  font:inherit;background:#fffaf0;outline:none;
+}
+.inputrow input:focus{border-color:#a9cbd5}
+.inputrow button{border:0;border-radius:15px;padding:0 20px;background:var(--ink);color:white;font-weight:700;font:inherit}
+.about{display:grid;grid-template-columns:.8fr 1.2fr;gap:50px;align-items:center}
+.about-paper{
+  background:var(--yellow);padding:42px;border-radius:8px 30px 8px 30px;
+  transform:rotate(-2deg);box-shadow:var(--shadow)
+}
+.about-paper h2{font-family:Kalam,cursive;font-size:3rem;line-height:1;margin:0 0 16px}
+.about-text h2{font-size:2.7rem;letter-spacing:-.06em;margin:0 0 16px}
+.about-text p{color:var(--muted);font-size:1.05rem}
+.faq{display:grid;gap:12px;max-width:800px;margin:auto}
+details{
+  background:rgba(255,253,248,.8);border:1px solid var(--line);border-radius:18px;padding:18px 21px;
+}
+summary{cursor:pointer;font-weight:700}
+details p{color:var(--muted);margin:12px 0 2px}
+.cta{
+  margin:75px auto 35px;padding:55px 30px;text-align:center;
+  background:var(--blue2);border:1px solid #c8e3ea;border-radius:35px;
+  position:relative;overflow:hidden;
+}
+.cta h2{font-size:clamp(2.4rem,5vw,4rem);letter-spacing:-.065em;margin:0 0 10px}
+.cta p{color:var(--muted);margin:0 auto 25px}
+footer{padding:30px 0 45px;color:var(--muted);font-size:.88rem;display:flex;justify-content:space-between}
+@media(max-width:800px){
+  .navlinks{display:none}.hero{padding-top:70px}.hero-grid,.about{grid-template-columns:1fr;gap:35px}
+  .desk{min-height:350px}.cards{grid-template-columns:1fr}.section{padding:55px 0}
+  .inputrow{flex-direction:column}.inputrow button{height:50px}
+  footer{flex-direction:column;gap:10px}
+}
+</style>
+
+<style id="why-locking-in-styles">
+.why-section{padding-top:45px}
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:18px;
+  max-width:1000px;
+  margin:auto;
+}
+.why-card{
+  grid-column:span 2;
+  position:relative;
+  padding:28px 27px 30px;
+  min-height:245px;
+  background:#fffdf8;
+  border:1px solid var(--line);
+  border-radius:24px 24px 30px 18px;
+  box-shadow:var(--shadow);
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.why-card:nth-child(1){background:#e8f3f5;transform:rotate(-1deg)}
+.why-card:nth-child(2){background:#fff4c9;transform:rotate(1deg)}
+.why-card:nth-child(3){background:#e7f0e1;transform:rotate(-.5deg)}
+.why-card:nth-child(4){
+  grid-column:2 / span 2;
+  background:#f8e4e3;
+  transform:rotate(1deg)
+}
+.why-card:nth-child(5){
+  background:#eee8da;
+  transform:rotate(-1deg)
+}
+.why-card:hover{
+  transform:translateY(-7px) rotate(0deg);
+  box-shadow:0 25px 55px rgba(62,53,39,.14);
+}
+.why-number{
+  font-family:Kalam,cursive;
+  color:#8198a0;
+  font-size:1rem;
+  margin-bottom:17px;
+}
+.why-card h3{
+  font-size:1.22rem;
+  line-height:1.3;
+  letter-spacing:-.025em;
+  margin:0 0 13px;
+}
+.why-card p{
+  color:#66757e;
+  margin:0;
+  font-size:.95rem;
+}
+@media(max-width:800px){
+  .why-grid{display:grid;grid-template-columns:1fr}
+  .why-card,.why-card:nth-child(4),.why-card:nth-child(5){
+    grid-column:auto;
+  }
+}
+</style>
+
+
+<style id="expanded-locking-in-styles">
+.functions-grid{grid-template-columns:repeat(2,1fr);max-width:1000px;margin:auto}
+.functions-grid .card{min-height:410px}
+.functions-grid .card:nth-child(4){background:#eee8da;transform:rotate(1deg)}
+.functions-grid .card:nth-child(4):hover{transform:translateY(-7px) rotate(0deg)}
+.tutor-card{background:#e7f0e1!important}
+.mini-list{padding-left:19px;margin:0 0 22px;color:#66757e;font-size:.92rem}
+.mini-list li{margin:5px 0}
+.registration-card{
+  display:flex;align-items:center;justify-content:space-between;gap:35px;
+  padding:36px 40px;background:#fffdf8;border:1px solid var(--line);
+  border-radius:30px;box-shadow:var(--shadow)
+}
+.registration-card h2{font-size:2rem;letter-spacing:-.05em;margin:0 0 7px}
+.registration-card p{color:var(--muted);margin:0;max-width:620px}
+.registration-actions{display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.process-step{
+  background:#fffdf8;border:1px solid var(--line);border-radius:22px;
+  padding:24px;box-shadow:0 10px 25px rgba(62,53,39,.06)
+}
+.process-step span{font-family:Kalam,cursive;color:#8198a0}
+.process-step h3{margin:10px 0 7px;font-size:1.2rem}
+.process-step p{margin:0;color:var(--muted);font-size:.92rem}
+.process-link{text-align:center;margin-top:25px}
+.contact-strip{
+  display:flex;align-items:center;justify-content:space-between;gap:25px;
+  padding:35px 40px;background:#f7f1e5;border:1px solid var(--line);
+  border-radius:30px
+}
+.contact-strip h2{margin:0 0 4px;font-size:2rem;letter-spacing:-.05em}
+.contact-strip p{margin:0;color:var(--muted)}
+.contact-links{display:flex;gap:10px;flex-wrap:wrap}
+.contact-links a{
+  padding:11px 15px;border:1px solid var(--line);border-radius:14px;
+  background:#fffdf8;font-weight:700
+}
+footer a:hover,.contact-links a:hover{color:#587681}
+@media(max-width:800px){
+  .functions-grid{grid-template-columns:1fr}
+  .registration-card,.contact-strip{flex-direction:column;align-items:flex-start}
+  .process-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+  .process-grid{grid-template-columns:1fr}
+}
+</style>
+
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#"><span>LOCK</span> IN.</a>
+  <div class="navlinks">
+    <a href="match_new.html">Find a tutor</a>
+    <a href="#groups">Study groups</a>
+    <a href="#about">About</a>
+    <a href="#why">Why Locking In?</a>
+  </div>
+  <a class="navbtn" href="#start">Get started →</a>
+</nav>
+
+<main>
+<section class="hero">
+  <span class="doodle d1">a little help goes a long way ↗</span>
+  <span class="doodle d2">you've got this ✦</span>
+  <div class="container hero-grid">
+    <div>
+      <div class="kicker">☁️ A cozy corner for Green River students</div>
+      <h1>Lock in.<br><span class="scribble">Together.</span></h1>
+      <p>Studying is hard enough. Find a peer tutor, ask a quick question, or meet classmates who are working toward the same goal.</p>
+      <div class="actions" id="start">
+        <a class="primary" href="#find">Find a tutor ✦</a>
+        <a class="secondary" href="#groups">Find a study group</a>
+      </div>
+    </div>
+    <div class="desk" aria-hidden="true">
+      <div class="note">
+        <div class="tape"></div>
+        <h3>Today's little plan</h3>
+        <ul>
+          <li>Finish calculus ✎</li>
+          <li>Ask that physics question</li>
+          <li>Study with someone</li>
+          <li>Take a break ☕</li>
+        </ul>
+      </div>
+      <div class="sticker">keep going!</div>
+      <div class="coffee"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="find">
+  <div class="container">
+    <div class="section-head">
+      <h2>Everything you need to <span class="scribble">lock in.</span></h2>
+      <p>No pressure. No judgment. Just students helping students.</p>
+    </div>
+    <div class="cards functions-grid">
+      <article class="card">
+        <div class="icon">🧑‍🏫</div>
+        <h3>Find a tutor</h3>
+        <p>Falling behind in class? Have trouble with homework questions? Need study advice from peers?</p>
+        <ul class="mini-list">
+          <li>Online or offline</li>
+          <li>Long-term or short-term</li>
+          <li>Answer-questions-only options</li>
+          <li>Your needs and preferences matter</li>
+        </ul>
+        <a href="match_new.html">Start finding a tutor →</a>
+      </article>
+
+      <article class="card tutor-card">
+        <div class="icon">🌱</div>
+        <h3>Become a tutor</h3>
+        <p>Help your peers while growing your own skills. Teaching is one of the best ways to reinforce what you know.</p>
+        <ul class="mini-list">
+          <li>Help fellow students</li>
+          <li>Gain teaching & communication skills</li>
+          <li>Reinforce your own knowledge</li>
+          <li>A meaningful volunteering opportunity</li>
+          <li>Choose online/offline or questions-only</li>
+          <li>Long-term or short-term</li>
+          <li>No set curriculum or rules</li>
+        </ul>
+        <a href="match_new.html">Become a tutor →</a>
+      </article>
+
+      <article class="card" id="forum">
+        <div class="icon">💬</div>
+        <h3>Quick question forum</h3>
+        <p>Join subject-categorized online discussion groups and get quick responses from your peers.</p>
+        <ul class="mini-list">
+          <li>Ask questions without pressure</li>
+          <li>Subject-focused discussions</li>
+          <li>Connect through Discord</li>
+        </ul>
+        <a href="https://discord.gg/nTNX9pep7" target="_blank" rel="noopener noreferrer">Join Discord →</a>
+      </article>
+
+      <article class="card" id="groups">
+        <div class="icon">👥</div>
+        <h3>Study groups</h3>
+        <p>Find classmates to do lab analysis, homework, or exam review together.</p>
+        <ul class="mini-list">
+          <li>Find classmates with the same goal</li>
+          <li>Study for exams together</li>
+          <li>Work through assignments as a team</li>
+        </ul>
+        <a href="https://discord.gg/nTNX9pep7" target="_blank" rel="noopener noreferrer">Find a study group →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section registration-section">
+  <div class="container">
+    <div class="registration-card">
+      <div>
+        <div class="kicker">📝 Ready to connect?</div>
+        <h2>Register once, then explore your options.</h2>
+        <p>Whether you're looking for a tutor, hoping to tutor someone else, or both, you can register through our matching form.</p>
+      </div>
+      <div class="registration-actions">
+        <a class="primary" href="https://docs.google.com/forms/d/e/1FAIpQLSfHyDLLz7OoxUFqZuZju-emJJpOAn-7ZxkcCAtawxsUZliJYw/viewform?usp=header" target="_blank" rel="noopener noreferrer">Register here →</a>
+        <a class="secondary" href="match_new.html">See how matching works</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section why-section" id="why">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">💭 Students understand students.</div>
+      <h2>Why <span class="scribble">Locking In?</span></h2>
+      <p>Sometimes getting academic support isn't about needing more resources. It's about making it easier to ask for help.</p>
+    </div>
+
+    <div class="why-grid">
+      <article class="why-card">
+        <div class="why-number">01</div>
+        <h3>“I'm scared to ask my professor questions.”</h3>
+        <p>Totally okay! Talking to professors can be stressful for us students sometimes. Reaching out to peer tutors can feel much easier!</p>
+      </article>
+
+      <article class="why-card">
+        <div class="why-number">02</div>
+        <h3>“I want to ask my classmates, but I'm worried I might bother them.”</h3>
+        <p>Our tutors are completely voluntary and willing to dedicate their time to helping their peers.</p>
+      </article>
+
+      <article class="why-card">
+        <div class="why-number">03</div>
+        <h3>“I'm too shy to ask questions in person.”</h3>
+        <p>We got you! You can choose to ask questions through chat online, and tutors can help in the way you both prefer. Any learning style is great if it works for you!</p>
+      </article>
+
+      <article class="why-card">
+        <div class="why-number">04</div>
+        <h3>“I want to form a study group, but I don't know who has the same need.”</h3>
+        <p>Join us on Discord! Post in our study group channel and students from the whole college who are interested can reply to your message.</p>
+      </article>
+
+      <article class="why-card">
+        <div class="why-number">05</div>
+        <h3>“I want to tutor, but the tutoring center has no openings.”</h3>
+        <p>That's awesome! You can become a peer tutor here. Students in our college will be able to find you, and your help can make a real difference.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section process-section" id="matching">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">🤝 How matching works</div>
+      <h2>Simple, flexible, student-centered.</h2>
+      <p>We keep the process straightforward while giving both sides control over whether they want to connect.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step"><span>01</span><h3>Register</h3><p>Tell us what you need, what you can offer, and your preferred tutoring style.</p></div>
+      <div class="process-step"><span>02</span><h3>Browse</h3><p>Look through the match sheet for a tutor or tutee you'd like to reach out to.</p></div>
+      <div class="process-step"><span>03</span><h3>Reach out</h3><p>Send an email from your student account with the person's name. Our staff will contact them.</p></div>
+      <div class="process-step"><span>04</span><h3>Connect</h3><p>If both sides agree, we'll help exchange contact information. If not, no information is shared.</p></div>
+    </div>
+    <div class="process-link"><a class="secondary" href="match_new.html">View the full matching page →</a></div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="container about">
+    <div class="about-paper">
+      <h2>For students,<br>by students.</h2>
+      <p>Knowledge gets better when we share it.</p>
+    </div>
+    <div class="about-text">
+      <h2>Learning shouldn't depend on how much you can afford.</h2>
+      <p>Locking In is a student-led, nonprofit community built to connect Green River College students with peer tutoring and academic support.</p>
+      <p>Whether you prefer a long-term tutor, a quick chat, an online answer, or an in-person study session, your learning style matters.</p>
+      <a class="primary" href="#contact">Get in touch →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-head">
+      <h2>Questions? We got you.</h2>
+      <p>A few things students often wonder about.</p>
+    </div>
+    <div class="faq">
+      <details><summary>I'm nervous about asking questions. Is that okay?</summary><p>Absolutely. You can choose the format that feels comfortable, including asking questions online.</p></details>
+      <details><summary>Can I become a tutor?</summary><p>Yes! Peer tutoring is a great way to reinforce your own knowledge while helping another student.</p></details>
+      <details><summary>What if I only have one quick homework question?</summary><p>That's exactly what the quick-question community is for. You don't need to commit to a long-term tutoring arrangement.</p></details>
+      <details><summary>Can I form a study group?</summary><p>Yes. Join the community, post what you're studying, and find classmates who want to work together.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="cta">
+    <h2>Ready to lock in?</h2>
+    <p>Bring your questions. Bring your half-finished homework. Bring a friend.</p>
+    <a class="primary" href="https://discord.gg/nTNX9pep7" target="_blank" rel="noopener noreferrer">Join the Discord ✦</a>
+  </div>
+</section>
+</main>
+
+<section class="container" id="contact">
+  <div class="contact-strip">
+    <div>
+      <div class="kicker">💌 Stay connected</div>
+      <h2>Questions, feedback, or updates?</h2>
+      <p>We're happy to hear from you.</p>
+    </div>
+    <div class="contact-links">
+      <a href="https://discord.gg/nTNX9pep7" target="_blank" rel="noopener noreferrer">Discord</a>
+      <a href="https://www.instagram.com/lockingin.grc?igsh=MWtwNnF1YmJ5eG1uag%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="mailto:wang.ziqi@student.greenriver.edu">Support email</a>
+    </div>
+  </div>
+</section>
+
+<footer class="container">
+  <div><strong>LOCK IN.</strong> — Built by students, for students.</div>
+  <div>
+    <a href="https://discord.gg/nTNX9pep7" target="_blank" rel="noopener noreferrer">Discord</a>
+    · <a href="https://www.instagram.com/lockingin.grc?igsh=MWtwNnF1YmJ5eG1uag%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a>
+    · <a href="mailto:wang.ziqi@student.greenriver.edu">Support</a>
+  </div>
+</footer>
+
+</body>
+</html>
