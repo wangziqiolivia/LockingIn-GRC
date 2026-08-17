@@ -135,26 +135,16 @@ body::before {
 
 
 .logo {
-
-    color: var(--ink);
-
+    display: flex;
+    align-items: center;
     text-decoration: none;
-
-    font-weight: 800;
-
-    letter-spacing: -.04em;
-
-    font-size: 1.2rem;
-
 }
 
-
-.logo span {
-
-    font-family: Kalam, cursive;
-
-    font-size: 1.35em;
-
+.logo img {
+    width: 130px;
+    height: auto;
+    display: block;
+    border-radius: 5px;
 }
 
 

@@ -50,8 +50,18 @@ nav{
   border:1px solid rgba(232,223,207,.9);border-radius:22px;
   box-shadow:0 8px 28px rgba(62,53,39,.06);
 }
-.logo{font-weight:800;letter-spacing:-.04em;font-size:1.2rem}
-.logo span{display:inline-block;transform:rotate(-2deg);font-family:Kalam,cursive;font-size:1.35em}
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo img {
+    width: 130px;
+    height: auto;
+    display: block;
+    border-radius: 5px;
+}
 .navlinks{display:flex;gap:24px;font-size:.9rem;color:var(--muted)}
 .navlinks a:hover{color:var(--ink)}
 .navbtn{
@@ -283,7 +293,7 @@ footer a:hover,.contact-links a:hover{color:#587681}
 <body>
 
 <nav>
-  <a class="logo" href="#"><span>LOCK</span> IN.</a>
+  <a class="logo" href="#"><img src="logo.png" alt="Locking In"></a>
   <div class="navlinks">
     <a href="match_new.html">Find a tutor</a>
     <a href="#groups">Study groups</a>
@@ -518,7 +528,9 @@ footer a:hover,.contact-links a:hover{color:#587681}
 </section>
 
 <footer class="container">
-  <div><strong>LOCK IN.</strong> — Built by students, for students.</div>
+  <div><a class="logo" href="index.html">
+    <img src="logo.png" alt="Locking In">
+</a> — Built by students, for students.</div>
   <div>
     <a href="https://discord.gg/nTNX9pep7" target="_blank" rel="noopener noreferrer">Discord</a>
     · <a href="https://www.instagram.com/lockingin.grc?igsh=MWtwNnF1YmJ5eG1uag%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a>
